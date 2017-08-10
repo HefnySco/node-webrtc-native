@@ -119,37 +119,9 @@ function downloadOrBuild(options) {
   var modulePath = computeModulePath(options.binary);
   if (exists(path.join(modulePath, 'include')) && exists(path.join(modulePath, 'lib'))) {
     return;
-  } else if (options.skipDownload) {
-    return build(options);
   }
-  var url = computeUrl(options);
-  console.log(
-    'Attempting to download WebRTC libraries and headers for platform "%s" ' +
-    'and architecture "%s" from\n', options.platform, options.arch);
-  console.log('  %s\n', url);
-  return new Promise(function(resolve, reject) {
-    download(url)
-      .once('error', reject)
-      .pipe(gunzip())
-      .once('error', reject)
-      .pipe(tar.extract(modulePath))
-      .once('error', reject)
-      .once('finish', resolve);
-  }).then(function() {
-    console.log('Complete!');
-  }, function(error) {
-    if (error.statusCode === 404) {
-      if (options.buildWebRTC) {
-        console.log('Binaries unavailable! Falling back to building from source.');
-        build(options);
-        return;
-      }
-      console.error('Binaries unavailable! Try building from source by setting BUILD_WEBRTC=1.');
-    } else {
-      console.error(error);
-    }
-    process.exit(1);
-  });
+  return build(options);
+  
 }
 
 /**
