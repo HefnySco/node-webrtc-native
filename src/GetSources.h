@@ -39,10 +39,10 @@ namespace WebRTC {
 
     static rtc::scoped_refptr<webrtc::VideoTrackInterface> GetVideoSource(const rtc::scoped_refptr<MediaConstraints> &constraints);
     static rtc::scoped_refptr<webrtc::VideoTrackInterface> GetVideoSource(const std::string id, const rtc::scoped_refptr<MediaConstraints> &constraints);
-
     static v8::Local<v8::Value> GetDevices();
 
    private:
+    static void GetVideoSource2(const Nan::FunctionCallbackInfo<v8::Value> &info);
     static void GetDevices(const Nan::FunctionCallbackInfo<v8::Value> &info);
   };
 };
